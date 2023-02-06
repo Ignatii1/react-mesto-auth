@@ -25,12 +25,14 @@ function Card(props) {
 
   return (
     <article className="photo-grid__card">
-      <img
-        src={link}
-        alt={name}
-        className="photo-grid__card-img"
-        onClick={handleClick}
-      />
+      <div class="photo-grid__card-img-wrapper">
+        <img
+          src={link}
+          alt={name}
+          className="photo-grid__card-img"
+          onClick={handleClick}
+        />
+      </div>
       {isOwn && (
         <button
           className="photo-grid__delete-btn"

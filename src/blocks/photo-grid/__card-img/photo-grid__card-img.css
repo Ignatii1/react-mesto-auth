@@ -1,8 +1,11 @@
 .photo-grid__card-img {
-  width: 280px;
-  height: 282px;
-  min-height: 282px;
-  object-fit: cover;
-  border-radius: 10px 10px 0 0;
   cursor: pointer;
+  background-position: 50%;
+  background-size: cover;
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  transition: all 0.1s ease-in;
+  width: 100%;
 }

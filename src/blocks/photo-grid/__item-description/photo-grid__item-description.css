@@ -1,8 +1,10 @@
 .photo-grid__item-description {
   display: flex;
   justify-content: space-between;
+  align-self: center;
   padding: 25px 20px;
-  width: 280px;
+  height: 79px;
+  width: 100%;
   box-sizing: border-box;
   border-radius: 0 0 10px 10px;
   background-color: #fff;

@@ -5,10 +5,7 @@ function Header() {
   return (
     <header className="header">
       <a href="#" className="header__logo">
-        <picture>
-          <source srcSet="./images/logo-mini.svg" media="(max-width: 321px)" />
-          <img src={logo} alt="Логотип Место" className="header__logo-img" />
-        </picture>
+        <img src={logo} alt="Логотип Место" className="header__logo-img" />
       </a>
     </header>
   )

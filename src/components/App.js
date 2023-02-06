@@ -8,6 +8,10 @@ import api from '../utils/api'
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
+import { Router, Route, Routes } from 'react-router-dom'
+import Login from './Login'
+import Register from './Register'
+import ProtectedRoutes from './ProtectedRoutes'
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
@@ -97,15 +101,28 @@ function App() {
       <div className="page">
         <Header />
 
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onAddCard={handleAddCardClick}
-          onEditAvatar={handleEditAvatarClick}
-          handleCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleDeleteClick}
-        />
+        <Routes>
+          <Route exact path="/" element={<ProtectedRoutes loggedIn={true} />}>
+            <Route
+              exact
+              path="/"
+              element={
+                <Main
+                  onEditProfile={handleEditProfileClick}
+                  onAddCard={handleAddCardClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  handleCardClick={handleCardClick}
+                  cards={cards}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleDeleteClick}
+                />
+              }
+            />
+          </Route>
+
+          <Route path="/sign-in" element={<Login />}></Route>
+          <Route path="/sign-up" element={<Register />}></Route>
+        </Routes>
 
         <Footer />
 

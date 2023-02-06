@@ -7,16 +7,14 @@
   justify-content: center;
 }
 
-@media screen and (max-width: 1080px) {
+@media screen and (max-width: 1020px) {
   .photo-grid {
-    padding: 0 19px 30px;
-    grid-template-columns: 280px 280px;
-    grid-template-rows: repeat(6, 361px);
-    grid-row-gap: 20px;
+    padding: 0 0px 30px;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media screen and (max-width: 870px) {
+@media screen and (max-width: 510px) {
   .photo-grid {
     padding: 0 19px 30px;
     grid-template-columns: 280px;
@@ -24,4 +22,3 @@
     grid-row-gap: 20px;
   }
 }
-
