@@ -8,7 +8,7 @@ import api from '../utils/api'
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
-import { Router, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Login from './Login'
 import Register from './Register'
 import ProtectedRoutes from './ProtectedRoutes'
@@ -102,7 +102,7 @@ function App() {
         <Header />
 
         <Routes>
-          <Route exact path="/" element={<ProtectedRoutes loggedIn={true} />}>
+          <Route exact path="/" element={<ProtectedRoutes loggedIn={false} />}>
             <Route
               exact
               path="/"
