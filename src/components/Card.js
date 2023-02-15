@@ -25,7 +25,7 @@ function Card(props) {
 
   return (
     <article className="photo-grid__card">
-      <div class="photo-grid__card-img-wrapper">
+      <div className="photo-grid__card-img-wrapper">
         <img
           src={link}
           alt={name}

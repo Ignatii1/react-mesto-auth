@@ -8,18 +8,21 @@ import api from '../utils/api'
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import Login from './Login'
 import Register from './Register'
 import ProtectedRoutes from './ProtectedRoutes'
+import InfoTooltip from './InfoTooltip'
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
-  const [cards, setCards] = useState([])
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false)
   const [selectedCard, setSelectedCard] = useState({})
   const [currentUser, setCurrentUser] = useState({})
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [cards, setCards] = useState([])
 
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getCards()])
@@ -120,8 +123,14 @@ function App() {
             />
           </Route>
 
-          <Route path="/sign-in" element={<Login />}></Route>
-          <Route path="/sign-up" element={<Register />}></Route>
+          <Route path="/sign-in" element={<Login />} />
+          <Route path="/sign-up" element={<Register />} />
+          <Route
+            path="*"
+            element={
+              loggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />
+            }
+          />
         </Routes>
 
         <Footer />
@@ -139,6 +148,7 @@ function App() {
         />
 
         <AddPlacePopup
+          name="infoTooltip"
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
@@ -148,6 +158,12 @@ function App() {
           card={selectedCard}
           onClose={closeAllPopups}
           isOpen={Object.keys(selectedCard).length !== 0}
+        />
+
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
+          onClose={closeAllPopups}
+          isSuccess={true}
         />
       </div>
     </CurrentUserContext.Provider>
