@@ -8,7 +8,8 @@ import api from '../utils/api'
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'
+import * as auth from '../utils/auth'
 import Login from './Login'
 import Register from './Register'
 import ProtectedRoutes from './ProtectedRoutes'
@@ -19,10 +20,13 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false)
+  const [isSuccess, setIsSuccess] = useState()
   const [selectedCard, setSelectedCard] = useState({})
   const [currentUser, setCurrentUser] = useState({})
   const [loggedIn, setLoggedIn] = useState(false)
   const [cards, setCards] = useState([])
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getCards()])
@@ -33,6 +37,38 @@ function App() {
       })
       .catch(console.log)
   }, [])
+
+  function handleLogin(email, password) {
+    auth
+      .login(email, password)
+      .then((res) => {
+        console.log(res)
+        localStorage.setItem('JWT', res.token)
+        setLoggedIn(true)
+        navigate('/')
+      })
+      .catch((err) => {
+        setIsInfoTooltipOpen(true)
+        setIsSuccess(false)
+        console.log(err)
+      })
+  }
+
+  function handleRegister(email, password) {
+    console.log(email, password)
+    auth
+      .register(email, password)
+      .then((res) => {
+        setIsInfoTooltipOpen(true)
+        setIsSuccess(true)
+        navigate('/sign-in')
+      })
+      .catch((err) => {
+        setIsInfoTooltipOpen(true)
+        setIsSuccess(false)
+        console.log(err)
+      })
+  }
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
@@ -72,6 +108,7 @@ function App() {
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
+    setIsInfoTooltipOpen(false)
     setSelectedCard({})
   }
 
@@ -105,7 +142,11 @@ function App() {
         <Header />
 
         <Routes>
-          <Route exact path="/" element={<ProtectedRoutes loggedIn={false} />}>
+          <Route
+            exact
+            path="/"
+            element={<ProtectedRoutes loggedIn={loggedIn} />}
+          >
             <Route
               exact
               path="/"
@@ -123,8 +164,11 @@ function App() {
             />
           </Route>
 
-          <Route path="/sign-in" element={<Login />} />
-          <Route path="/sign-up" element={<Register />} />
+          <Route path="/sign-in" element={<Login onSubmit={handleLogin} />} />
+          <Route
+            path="/sign-up"
+            element={<Register onSubmit={handleRegister} />}
+          />
           <Route
             path="*"
             element={
@@ -163,7 +207,7 @@ function App() {
         <InfoTooltip
           isOpen={isInfoTooltipOpen}
           onClose={closeAllPopups}
-          isSuccess={true}
+          isSuccess={isSuccess}
         />
       </div>
     </CurrentUserContext.Provider>
