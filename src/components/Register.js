@@ -35,7 +35,7 @@ function Register(props) {
           ></input>
         </div>
         <button className="auth__submit" type="submit">
-          Войти
+          Зарегистрироваться
         </button>
       </form>
       <a href="/sign-in" className="auth__login-link">

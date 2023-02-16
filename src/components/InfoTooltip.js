@@ -10,16 +10,16 @@ function InfoTooltip(props) {
   }`
   const image = `${isSuccess ? successImage : failImage}`
   return (
-    <div className={`popup popup_${name} ${isOpen && 'popup_opened'}`}>
-      <div className="popup__content popup__container">
+    <div className={`popup ${isOpen && 'popup_opened'}`}>
+      <div className={`popup_${name} popup__content popup__container`}>
         <button
           className={`popup__close-button popup__close-button_${name}`}
           type="button"
           aria-label="Close"
           onClick={onClose}
         ></button>
-        <img className="popup__image" alt="" src={image} />
-        <h2 className="popup__title">{title}</h2>
+        <img className="popup__info-sign" alt="" src={image} />
+        <h2 className="popup__title  popup__info-caption">{title}</h2>
       </div>
     </div>
   )

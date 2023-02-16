@@ -24,28 +24,47 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({})
   const [currentUser, setCurrentUser] = useState({})
   const [loggedIn, setLoggedIn] = useState(false)
+  const [email, setEmail] = useState('')
   const [cards, setCards] = useState([])
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getCards()])
-      .then((res) => {
-        const [profileInfo, cardsArray] = res
-        setCards(cardsArray)
-        setCurrentUser(profileInfo)
-      })
-      .catch(console.log)
-  }, [])
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getCards()])
+        .then((res) => {
+          const [profileInfo, cardsArray] = res
+          setCards(cardsArray)
+          setCurrentUser(profileInfo)
+        })
+        .catch(console.log)
+    }
+  }, [loggedIn])
+
+  useEffect(() => {
+    const jwt = localStorage.getItem('JWT')
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          setLoggedIn(true)
+          setEmail(res.data.email)
+          navigate('/')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }, [navigate])
 
   function handleLogin(email, password) {
     auth
       .login(email, password)
       .then((res) => {
-        console.log(res)
         localStorage.setItem('JWT', res.token)
         setLoggedIn(true)
         navigate('/')
+        setEmail(email)
       })
       .catch((err) => {
         setIsInfoTooltipOpen(true)
@@ -68,6 +87,13 @@ function App() {
         setIsSuccess(false)
         console.log(err)
       })
+  }
+
+  function onSignOut() {
+    localStorage.removeItem('JWT')
+    navigate('/sign-in')
+    setLoggedIn(false)
+    setEmail('')
   }
 
   function handleEditProfileClick() {
@@ -139,7 +165,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header loggedIn={loggedIn} email={email} onSignOut={onSignOut} />
 
         <Routes>
           <Route
@@ -208,6 +234,7 @@ function App() {
           isOpen={isInfoTooltipOpen}
           onClose={closeAllPopups}
           isSuccess={isSuccess}
+          name="infotooltip"
         />
       </div>
     </CurrentUserContext.Provider>
