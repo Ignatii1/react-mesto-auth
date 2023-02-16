@@ -5,7 +5,6 @@ function Register(props) {
   const [inputs, setInputs] = useState([])
 
   function handleChange(e) {
-    console.log(inputs)
     const { name, value } = e.target
     setInputs((inputs) => ({ ...inputs, [name]: value }))
   }
