@@ -12,7 +12,8 @@ function EditProfilePopup(props) {
   }, [currentUser, isOpen])
 
   function handleChange(e) {
-    setInputs({ ...inputs, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setInputs((prevInputs) => ({ ...prevInputs, [name]: value }))
   }
 
   function handleSubmit(e) {
@@ -33,7 +34,6 @@ function EditProfilePopup(props) {
       buttonText="Сохранить"
     >
       <input
-        value={inputs.name}
         onChange={handleChange}
         type="text"
         className="popup__input popup__input-name"
@@ -47,7 +47,6 @@ function EditProfilePopup(props) {
       <span className="popup__input-error name-input-error"></span>
       <input
         onChange={handleChange}
-        value={inputs.description}
         type="text"
         className="popup__input popup__input-description"
         name="description"
