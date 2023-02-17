@@ -4,7 +4,7 @@
   "private": true,
   "author": "Ignatii Baigulov",
   "description": "Tiny substitute for instagram",
-  "homepage": "https://ignatii1.github.io/react-mesto-auth/",
+  "homepage": "https://ignatii1.github.io/react-mesto-auth",
   "dependencies": {
     "cra-template": "1.2.0",
     "react": "^18.2.0",
